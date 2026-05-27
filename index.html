@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shakhawat — Full-Stack Developer & UI Designer</title>
   <meta name="description" content="Portfolio of Shakhawat — Full-Stack Web Developer & UI-focused Frontend Designer." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAbElEQVRYhe2UMQ6AIAxFuwtHcPE+nsTDeBBv4MImJk2MpQN0+JMtL3ltU1oAKPkvALfbB+ccpZQYxsEYY4xRSilKKXFdFxERh2GglBIRIQCMc4RQtNZEROS9l1IKIiKlFBHhOScRYYwREQH4AOc3IfDR6bW4AAAAAElFTkSuQmCC" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -603,13 +605,13 @@
     </div>
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
       <div class="reveal">
-        <form id="contactForm" class="glass-card rounded-3xl p-8 sm:p-10 shadow-xl space-y-6">
+        <form id="contactForm" class="glass-card rounded-3xl p-8 sm:p-10 shadow-xl space-y-6" action="contact.php" method="POST">
           <div class="grid sm:grid-cols-2 gap-5">
-            <div><label class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">Your Name</label><input type="text" class="contact-input" placeholder="John Doe" required /></div>
-            <div><label class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">Your Email</label><input type="email" class="contact-input" placeholder="john@example.com" required /></div>
+            <div><label class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">Your Name</label><input type="text" name="name" class="contact-input" placeholder="John Doe" required /></div>
+            <div><label class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">Your Email</label><input type="email" name="email" class="contact-input" placeholder="john@example.com" required /></div>
           </div>
-          <div><label class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">Subject</label><input type="text" class="contact-input" placeholder="Project Collaboration" /></div>
-          <div><label class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">Message</label><textarea rows="5" class="contact-input resize-none" placeholder="Tell me about your project..." required></textarea></div>
+          <div><label class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">Subject</label><input type="text" name="subject" class="contact-input" placeholder="Project Collaboration" /></div>
+          <div><label class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">Message</label><textarea rows="5" name="message" class="contact-input resize-none" placeholder="Tell me about your project..." required></textarea></div>
           <button type="submit" class="btn-primary w-full !rounded-xl !py-3.5 text-base">Send Message</button>
         </form>
       </div>
@@ -706,7 +708,7 @@ document.querySelectorAll('#skills .glass-card').forEach(c=>skillObserver.observ
 window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progressBar').style.width=(window.scrollY/h*100)+'%';const b=document.getElementById('backToTop');if(window.scrollY>500){b.style.opacity='1';b.style.visibility='visible';b.style.transform='translateY(0)'}else{b.style.opacity='0';b.style.visibility='hidden';b.style.transform='translateY(16px)'}});
 document.getElementById('backToTop').addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'})});
 
-document.getElementById('contactForm')?.addEventListener('submit',function(e){e.preventDefault();const btn=this.querySelector('button[type=submit]');const t=btn.textContent;btn.textContent='Message Sent!';btn.style.background='linear-gradient(135deg,#10b981,#059669)';setTimeout(()=>{btn.textContent=t;btn.style.background=''},3000)});
+document.getElementById('contactForm')?.addEventListener('submit',async function(e){e.preventDefault();const btn=this.querySelector('button[type=submit]');const t=btn.textContent;btn.disabled=true;btn.textContent='Sending...';try{const r=await fetch(this.action,{method:this.method,body:new FormData(this)});const d=await r.json();if(d.success){btn.textContent='Message Sent!';btn.style.background='linear-gradient(135deg,#10b981,#059669)';this.reset()}else{btn.textContent='Error!';btn.style.background='linear-gradient(135deg,#ef4444,#dc2626)';alert(d.message||'Failed to send')}}catch(e){btn.textContent='Error!';btn.style.background='linear-gradient(135deg,#ef4444,#dc2626)';alert('Network error. Please try again.')}setTimeout(()=>{btn.disabled=false;btn.textContent=t;btn.style.background=''},3000)});
 </script>
 
 </body>

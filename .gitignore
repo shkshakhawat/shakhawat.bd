@@ -1,2 +1,5 @@
 .DS_Store
 concept.md
+mail-config.php
+/vendor/
+/composer.lock
